@@ -1,9 +1,14 @@
-import { Button, Grid, withStyles } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  withStyles,
+} from "@material-ui/core";
 import React, { Component } from "react";
 import styles from "../Taskboard/styles";
 import AddIcon from "@material-ui/icons/Add";
 import { STATUSES } from "../../constants";
 import TaskList from "../../components/TaskList";
+import TaskForm from "../../components/TaskForm";
 
 const listTask = [
   {
@@ -27,6 +32,31 @@ const listTask = [
 ];
 
 class Taskboard extends Component {
+  state = {
+    open: false,
+  };
+
+  openForm = () => {
+    this.setState({
+      open: true,
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
+  renderForm() {
+    let { open } = this.state;
+    let xhtml = null;
+    xhtml = (
+      <TaskForm open={open} handleClose={this.handleClose}/>
+    );
+    return xhtml;
+  }
+
   renderBoard() {
     let xhtml = null;
     xhtml = (
@@ -47,10 +77,11 @@ class Taskboard extends Component {
   render() {
     return (
       <div className='taskBoard'>
-        <Button variant='contained' color='primary'>
+        <Button variant='contained' color='primary' onClick={this.openForm}>
           <AddIcon /> Thêm công việc
         </Button>
         {this.renderBoard()}
+        {this.renderForm()}
       </div>
     );
   }
