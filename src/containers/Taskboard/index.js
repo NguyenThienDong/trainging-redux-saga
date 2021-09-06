@@ -1,95 +1,94 @@
+/* eslint-disable no-shadow */
 import { Button, Grid, withStyles } from '@material-ui/core';
 import React, { Component } from 'react';
-import styles from './styles';
 import AddIcon from '@material-ui/icons/Add';
-import STATUSES from '../../constants';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { STATUSES } from '../../constants';
 import TaskList from '../../components/TaskList';
 import TaskForm from '../../components/TaskForm';
-
-const listTask = [
-    {
-        id: 1,
-        title: 'Read book',
-        description: 'Read material ui book',
-        status: 0,
-    },
-    {
-        id: 2,
-        title: 'Play football',
-        description: 'Play in evening',
-        status: 2,
-    },
-    {
-        id: 3,
-        title: 'Play game',
-        description: 'Play with my friend',
-        status: 1,
-    },
-];
+import * as taskActions from '../../actions/task';
+import styles from './styles';
 
 class Taskboard extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            open: false,
-        };
-    }
-
-    openForm = () => {
-        this.setState({
-            open: true,
-        });
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
     };
+  }
 
-    handleClose = () => {
-        this.setState({
-            open: false,
-        });
-    };
+  componentDidMount() {
+    const { taskActionCreators } = this.props;
+    const { fetchListTaskRequest } = taskActionCreators;
+    fetchListTaskRequest();
+  }
 
-    renderForm() {
-        const { open } = this.state;
-        let xhtml = null;
-        xhtml = <TaskForm open={open} handleClose={this.handleClose} />;
-        return xhtml;
-    }
+  openForm = () => {
+    this.setState({
+      open: true,
+    });
+  };
 
-    renderBoard = () => {
-        let xhtml = null;
-        xhtml = (
-            <Grid container spacing={2}>
-                {STATUSES.map((status) => {
-                    const taskFilter = listTask.filter(
-                        (task) => task.status === status.value,
-                    );
-                    return (
-                        <TaskList
-                            key={status.value}
-                            tasks={taskFilter}
-                            status={status}
-                        />
-                    );
-                })}
-            </Grid>
-        );
-        return xhtml;
-    }
+  handleClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
 
-    render() {
-        return (
-            <div className='taskBoard'>
-                <Button
-                    variant='contained'
-                    color='primary'
-                    onClick={this.openForm}
-                >
-                    <AddIcon /> Thêm công việc
-                </Button>
-                {this.renderBoard()}
-                {this.renderForm()}
-            </div>
-        );
-    }
+  renderForm() {
+    const { open } = this.state;
+    let xhtml = null;
+    xhtml = <TaskForm open={open} handleClose={this.handleClose} />;
+    return xhtml;
+  }
+
+  renderBoard = () => {
+    const { listTask } = this.props;
+    let xhtml = null;
+    xhtml = (
+      <Grid container spacing={2}>
+        {STATUSES.map((status) => {
+          const taskFilter = listTask.filter(
+            (task) => task.status === status.value,
+          );
+          return (
+            <TaskList key={status.value} tasks={taskFilter} status={status} />
+          );
+        })}
+      </Grid>
+    );
+    return xhtml;
+  };
+
+  render() {
+    return (
+      <div className="taskBoard">
+        <Button variant="contained" color="primary" onClick={this.openForm}>
+          <AddIcon /> Thêm công việc
+        </Button>
+        {this.renderBoard()}
+        {this.renderForm()}
+      </div>
+    );
+  }
 }
 
-export default withStyles(styles)(Taskboard);
+Taskboard.propTypes = {
+  taskActionCreators: PropTypes.shape({
+    fetchListTaskRequest: PropTypes.func,
+  }),
+  listTask: PropTypes.array,
+};
+
+const mapStateToProps = (state) => ({
+  listTask: state.task.listTask,
+});
+const mapActionsToProps = (dispatch) => ({
+  taskActionCreators: bindActionCreators(taskActions, dispatch),
+});
+
+export default withStyles(styles)(
+  connect(mapStateToProps, mapActionsToProps)(Taskboard),
+);

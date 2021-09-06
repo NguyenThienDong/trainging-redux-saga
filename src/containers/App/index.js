@@ -1,9 +1,9 @@
-import { ThemeProvider, withStyles } from '@material-ui/core';
 import React, { Component } from 'react';
+import { ThemeProvider, withStyles } from '@material-ui/core';
+import { Provider } from 'react-redux';
 import theme from '../../commons/Theme';
 import Taskboard from '../Taskboard';
 import styles from './styles';
-import { Provider } from 'react-redux';
 import store from '../../redux/index';
 
 class App extends Component {
