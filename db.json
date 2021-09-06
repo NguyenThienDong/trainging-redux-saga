@@ -1,0 +1,21 @@
+{
+  "tasks": [
+    {
+      "title": "Learning reactjs",
+      "description": "Redux form",
+      "status": 2,
+      "id": 1
+    },
+    {
+      "title": "Learning SASS",
+      "status": 1,
+      "id": 2
+    },
+    {
+      "title": "Learning Java",
+      "description": "OOP",
+      "status": 0,
+      "id": 3
+    }
+  ]
+}
