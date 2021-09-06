@@ -1,18 +1,18 @@
 import * as taskApis from '../apis/task';
 import * as taskConstants from '../constants/task';
 
-const fetchListTask = () => ({
+export const fetchListTask = () => ({
   type: taskConstants.FETCH_TASKS,
 });
 
-const fetchListTaskSuccess = (data) => ({
+export const fetchListTaskSuccess = (data) => ({
   type: taskConstants.FETCH_TASKS_SUCCESS,
   payload: {
     data,
   },
 });
 
-const fetchListTaskFail = (error) => ({
+export const fetchListTaskFail = (error) => ({
   type: taskConstants.FETCH_TASKS_FAIL,
   payload: {
     error,

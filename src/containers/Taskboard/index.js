@@ -19,11 +19,11 @@ class Taskboard extends Component {
     };
   }
 
-  componentDidMount() {
-    const { taskActionCreators } = this.props;
-    const { fetchListTaskRequest } = taskActionCreators;
-    fetchListTaskRequest();
-  }
+  // componentDidMount() {
+  //   const { taskActionCreators } = this.props;
+  //   const { fetchListTaskRequest } = taskActionCreators;
+  //   fetchListTaskRequest();
+  // }
 
   openForm = () => {
     this.setState({
@@ -35,6 +35,12 @@ class Taskboard extends Component {
     this.setState({
       open: false,
     });
+  };
+
+  loadData = () => {
+    const { taskActionCreators } = this.props;
+    const { fetchListTask } = taskActionCreators;
+    fetchListTask();
   };
 
   renderForm() {
@@ -65,6 +71,9 @@ class Taskboard extends Component {
   render() {
     return (
       <div className="taskBoard">
+        <Button variant="contained" color="primary" onClick={this.loadData}>
+          Load Data
+        </Button>
         <Button variant="contained" color="primary" onClick={this.openForm}>
           <AddIcon /> Thêm công việc
         </Button>
@@ -77,7 +86,7 @@ class Taskboard extends Component {
 
 Taskboard.propTypes = {
   taskActionCreators: PropTypes.shape({
-    fetchListTaskRequest: PropTypes.func,
+    fetchListTask: PropTypes.func,
   }),
   listTask: PropTypes.array,
 };
