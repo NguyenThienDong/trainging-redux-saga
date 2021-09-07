@@ -24,6 +24,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         listTask: [],
       };
+    case taskConstants.FILTER_TASKS_SUCCESS:
+      return {
+        ...state,
+        listTask: payload.data,
+      };
     default:
       return state;
   }

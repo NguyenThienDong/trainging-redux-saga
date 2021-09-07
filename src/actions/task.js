@@ -26,3 +26,17 @@ export const fetchListTaskRequest = () => (dispatch) => {
     .then((res) => dispatch(fetchListTaskSuccess(res.data)))
     .catch((error) => dispatch(fetchListTaskFail(error)));
 };
+
+export const filterTask = (keyword) => ({
+  type: taskConstants.FILTER_TASKS,
+  payload: {
+    keyword,
+  },
+});
+
+export const filterTaskSuccess = (data) => ({
+  type: taskConstants.FILTER_TASKS_SUCCESS,
+  payload: {
+    data,
+  },
+});

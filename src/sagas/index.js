@@ -1,9 +1,21 @@
 /* eslint-disable spaced-comment */
-import { call, fork, take, put, delay } from 'redux-saga/effects';
+import {
+  call,
+  fork,
+  take,
+  put,
+  delay,
+  takeLatest,
+  select,
+} from 'redux-saga/effects';
 import * as taskConstants from '../constants/task';
 import { getList } from '../apis/task';
 import { STATUS_CODE } from '../constants/index';
-import { fetchListTaskSuccess, fetchListTaskFail } from '../actions/task';
+import {
+  fetchListTaskSuccess,
+  fetchListTaskFail,
+  filterTaskSuccess,
+} from '../actions/task';
 import { hiddenLoading, showLoading } from '../actions/ui';
 
 /*
@@ -34,14 +46,19 @@ function* watchFetchListTaskAction() {
   }
 }
 
-function* watchCreateTaskAction() {
-  yield true;
-  console.log('watching create task action');
+function* filterTaskSaga(e) {
+  yield delay(500);
+  const { keyword } = e.payload;
+  const list = yield select((state) => state.task.listTask); //select lấy data từ state tại saga
+  const filterTasks = list.filter((task) =>
+    task.title.trim().toLowerCase().includes(keyword.trim().toLowerCase()),
+  );
+  yield put(filterTaskSuccess(filterTasks));
 }
 
 function* rootSaga() {
   yield fork(watchFetchListTaskAction); // fork - truyen vao function*
-  yield fork(watchCreateTaskAction);
+  yield takeLatest(taskConstants.FILTER_TASKS, filterTaskSaga); //Thay takeLatest = takeEvery để thử.
 }
 
 export default rootSaga;
