@@ -1,9 +1,10 @@
 /* eslint-disable spaced-comment */
-import { call, fork, take, put } from 'redux-saga/effects';
+import { call, fork, take, put, delay } from 'redux-saga/effects';
 import * as taskConstants from '../constants/task';
 import { getList } from '../apis/task';
 import { STATUS_CODE } from '../constants/index';
 import { fetchListTaskSuccess, fetchListTaskFail } from '../actions/task';
+import { hiddenLoading, showLoading } from '../actions/ui';
 
 /*
 B1: Thực thi action FETCH_TASKS
@@ -20,12 +21,16 @@ function* watchFetchListTaskAction() {
     const resp = yield call(getList); // call - truyen vao ham api
     const { status, data } = resp;
     if (status === STATUS_CODE.SUCCESS) {
+      yield put(showLoading());
       // dispatch action fetchListTaskSuccess
       yield put(fetchListTaskSuccess(data)); //put - truyen vao ham thuc hien hanh dong
     } else {
+      yield put(showLoading());
       // dispatch action fetchListTaskFail
       yield put(fetchListTaskFail(data));
     }
+    yield delay(1000);
+    yield put(hiddenLoading());
   }
 }
 
