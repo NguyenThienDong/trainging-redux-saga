@@ -7,35 +7,32 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { STATUSES } from '../../constants';
 import TaskList from '../../components/TaskList';
-import TaskForm from '../../components/TaskForm';
 import * as taskActions from '../../actions/task';
+import * as modalActions from '../../actions/modal';
 import styles from './styles';
 import SearchBox from '../../components/SearchBox';
+import TaskForm from '../../components/TaskForm';
 
 class Taskboard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false,
-    };
+  componentDidMount() {
+    const { taskActionCreators } = this.props;
+    const { fetchListTaskRequest } = taskActionCreators;
+    fetchListTaskRequest();
   }
 
-  // componentDidMount() {
-  //   const { taskActionCreators } = this.props;
-  //   const { fetchListTaskRequest } = taskActionCreators;
-  //   fetchListTaskRequest();
-  // }
-
   openForm = () => {
-    this.setState({
-      open: true,
-    });
+    const { modalActionsCreators } = this.props;
+    const { showModal, changeModalTitle, changeModalContent } =
+      modalActionsCreators;
+    showModal();
+    changeModalTitle('Thêm công việc');
+    changeModalContent(<TaskForm />);
   };
 
-  handleClose = () => {
-    this.setState({
-      open: false,
-    });
+  closeForm = () => {
+    const { modalActionsCreators } = this.props;
+    const { hideModal } = modalActionsCreators;
+    hideModal();
   };
 
   loadData = () => {
@@ -54,13 +51,6 @@ class Taskboard extends Component {
   searchBox() {
     let xhtml = null;
     xhtml = <SearchBox handleChange={this.handleFilter} />;
-    return xhtml;
-  }
-
-  renderForm() {
-    const { open } = this.state;
-    let xhtml = null;
-    xhtml = <TaskForm open={open} handleClose={this.handleClose} />;
     return xhtml;
   }
 
@@ -93,7 +83,6 @@ class Taskboard extends Component {
         </Button>
         {this.searchBox()}
         {this.renderBoard()}
-        {this.renderForm()}
       </div>
     );
   }
@@ -102,7 +91,14 @@ class Taskboard extends Component {
 Taskboard.propTypes = {
   taskActionCreators: PropTypes.shape({
     fetchListTask: PropTypes.func,
+    fetchListTaskRequest: PropTypes.func,
     filterTask: PropTypes.func,
+  }),
+  modalActionsCreators: PropTypes.shape({
+    showModal: PropTypes.func,
+    hideModal: PropTypes.func,
+    changeModalTitle: PropTypes.func,
+    changeModalContent: PropTypes.func,
   }),
   listTask: PropTypes.array,
 };
@@ -112,6 +108,7 @@ const mapStateToProps = (state) => ({
 });
 const mapActionsToProps = (dispatch) => ({
   taskActionCreators: bindActionCreators(taskActions, dispatch),
+  modalActionsCreators: bindActionCreators(modalActions, dispatch),
 });
 
 export default withStyles(styles)(
