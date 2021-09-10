@@ -25,7 +25,6 @@ module.exports = {
     'react/jsx-one-expression-per-line': 0,
     'react/forbid-prop-types': 0,
     'react/require-default-props': 0,
-    'no-unused-vars': 1,
     'import/extensions': 0,
     'import/order': 1,
     'react/prefer-stateless-function': 0,
@@ -36,6 +35,7 @@ module.exports = {
     'react/jsx-uses-vars': 2,
     'react/jsx-closing-bracket-location': 1,
     'react/jsx-first-prop-new-line': 1,
+    'react/jsx-props-no-spreading': 0,
     'prettier/prettier': [
       'error',
       {

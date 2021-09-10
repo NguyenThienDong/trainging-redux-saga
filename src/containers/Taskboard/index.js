@@ -11,7 +11,7 @@ import * as taskActions from '../../actions/task';
 import * as modalActions from '../../actions/modal';
 import styles from './styles';
 import SearchBox from '../../components/SearchBox';
-import TaskForm from '../../components/TaskForm';
+import TaskForm from '../TaskForm';
 
 class Taskboard extends Component {
   componentDidMount() {
