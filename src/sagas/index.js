@@ -56,7 +56,7 @@ function* filterTaskSaga({ payload }) {
   const { keyword } = payload;
   yield put(
     fetchListTask({
-      q: keyword,
+      q: keyword
     }),
   );
 }
