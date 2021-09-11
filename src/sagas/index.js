@@ -13,6 +13,7 @@ import * as taskConstants from '../constants/task';
 import { addTask, getList } from '../apis/task';
 import { STATUSES, STATUS_CODE } from '../constants/index';
 import {
+  fetchListTask,
   fetchListTaskSuccess,
   fetchListTaskFail,
   filterTaskSuccess,
@@ -33,15 +34,15 @@ B5: Thực thi các công việc tiếp theo
 
 function* watchFetchListTaskAction() {
   while (true) {
-    yield take(taskConstants.FETCH_TASKS); // take - truyen vao hanh dong, chi theo doi action fetch_task 1 lan dau tien, neu muon theo doi nhieu dung lap vo han
-    const resp = yield call(getList); // call - truyen vao ham api
+    const action = yield take(taskConstants.FETCH_TASKS); // take - truyen vao hanh dong, chi theo doi action fetch_task 1 lan dau tien, neu muon theo doi nhieu dung lap vo han
+    yield put(showLoading());
+    const { params } = action.payload;
+    const resp = yield call(getList, params); // call - truyen vao ham api
     const { status, data } = resp;
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(showLoading());
       // dispatch action fetchListTaskSuccess
       yield put(fetchListTaskSuccess(data)); //put - truyen vao ham thuc hien hanh dong
     } else {
-      yield put(showLoading());
       // dispatch action fetchListTaskFail
       yield put(fetchListTaskFail(data));
     }
@@ -50,14 +51,14 @@ function* watchFetchListTaskAction() {
   }
 }
 
-function* filterTaskSaga(e) {
+function* filterTaskSaga({ payload }) {
   yield delay(500);
-  const { keyword } = e.payload;
-  const list = yield select((state) => state.task.listTask); //select lấy data từ state tại saga
-  const filterTasks = list.filter((task) =>
-    task.title.trim().toLowerCase().includes(keyword.trim().toLowerCase()),
+  const { keyword } = payload;
+  yield put(
+    fetchListTask({
+      q: keyword,
+    }),
   );
-  yield put(filterTaskSuccess(filterTasks));
 }
 
 function* addTaskSaga({ payload }) {
