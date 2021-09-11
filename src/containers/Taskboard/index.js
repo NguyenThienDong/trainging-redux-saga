@@ -21,7 +21,9 @@ class Taskboard extends Component {
   }
 
   openForm = () => {
-    const { modalActionsCreators } = this.props;
+    const { modalActionsCreators, taskActionCreators } = this.props;
+    const { setTaskEditing } = taskActionCreators;
+    setTaskEditing(null);
     const { showModal, changeModalTitle, changeModalContent } =
       modalActionsCreators;
     showModal();
@@ -39,6 +41,17 @@ class Taskboard extends Component {
     const { taskActionCreators } = this.props;
     const { fetchListTask } = taskActionCreators;
     fetchListTask();
+  };
+
+  handleEditTask = (task) => {
+    const { taskActionCreators, modalActionsCreators } = this.props;
+    const { setTaskEditing } = taskActionCreators;
+    setTaskEditing(task);
+    const { showModal, changeModalTitle, changeModalContent } =
+      modalActionsCreators;
+    showModal();
+    changeModalTitle('Cập nhật công việc');
+    changeModalContent(<TaskForm />);
   };
 
   handleFilter = (e) => {
@@ -64,7 +77,12 @@ class Taskboard extends Component {
             (task) => task.status === status.value,
           );
           return (
-            <TaskList key={status.value} tasks={taskFilter} status={status} />
+            <TaskList
+              key={status.value}
+              tasks={taskFilter}
+              status={status}
+              onClickEdit={this.handleEditTask}
+            />
           );
         })}
       </Grid>
@@ -93,6 +111,7 @@ Taskboard.propTypes = {
     fetchListTask: PropTypes.func,
     fetchListTaskRequest: PropTypes.func,
     filterTask: PropTypes.func,
+    setTaskEditing: PropTypes.func,
   }),
   modalActionsCreators: PropTypes.shape({
     showModal: PropTypes.func,

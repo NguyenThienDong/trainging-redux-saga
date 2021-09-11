@@ -1,4 +1,5 @@
 import * as taskApis from '../apis/task';
+import { STATUSES } from '../constants';
 import * as taskConstants from '../constants/task';
 
 export const fetchListTask = (params = {}) => ({
@@ -61,6 +62,36 @@ export const addTaskSuccess = (data) => ({
 
 export const addTaskFail = (error) => ({
   type: taskConstants.ADD_TASK_FAIL,
+  payload: {
+    error,
+  },
+});
+
+export const setTaskEditing = (task) => ({
+  type: taskConstants.SET_TASK_EDITING,
+  payload: {
+    task,
+  },
+});
+
+export const updateTask = (title, description, status = STATUSES[0].value) => ({
+  type: taskConstants.UPDATE_TASK,
+  payload: {
+    title,
+    description,
+    status,
+  },
+});
+
+export const updateTaskSuccess = (data) => ({
+  type: taskConstants.UPDATE_TASK_SUCCESS,
+  payload: {
+    data,
+  },
+});
+
+export const updateTaskFail = (error) => ({
+  type: taskConstants.UPDATE_TASK_FAIL,
   payload: {
     error,
   },

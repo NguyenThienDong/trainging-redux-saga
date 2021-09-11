@@ -15,3 +15,6 @@ export const getList = (params = {}) => {
 
 export const addTask = (data) =>
   axiosService.post(`${API_ENDPOINT}/${url}`, data);
+
+export const updateTask = (data, taskId) =>
+  axiosService.put(`${API_ENDPOINT}/${url}/${taskId}`, data);
