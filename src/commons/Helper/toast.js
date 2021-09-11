@@ -9,3 +9,12 @@ export const toastError = (error) => {
     toast.error(message);
   }
 };
+export const toastSuccess = (success) => {
+  let message = null;
+  if (typeof success === 'object' && success.message) {
+    message = success.message;
+  }
+  if (message !== null && typeof message !== 'undefined' && message !== '') {
+    toast.success(message);
+  }
+};

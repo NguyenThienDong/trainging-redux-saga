@@ -4,3 +4,7 @@ export const FETCH_TASKS_FAIL = 'FETCH_TASKS_FAIL';
 
 export const FILTER_TASKS = 'FILTER_TASKS';
 export const FILTER_TASKS_SUCCESS = 'FILTER_TASKS_SUCCESS';
+
+export const ADD_TASK = 'ADD_TASK';
+export const ADD_TASK_SUCCESS = 'ADD_TASK_SUCCESS';
+export const ADD_TASK_FAIL = 'ADD_TASK_FAIL';
