@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import { Button, Grid, withStyles } from '@material-ui/core';
+import { Box, Button, Grid, withStyles } from '@material-ui/core';
 import React, { Component } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import { connect } from 'react-redux';
@@ -61,6 +61,47 @@ class Taskboard extends Component {
     filterTask(value);
   };
 
+  showModalDelete = (task) => {
+    const { modalActionsCreators, classes } = this.props;
+    const { showModal, changeModalTitle, changeModalContent, hideModal } =
+      modalActionsCreators;
+    showModal();
+    changeModalTitle('Xoá công việc');
+    changeModalContent(
+      <div className={classes.modalDelete}>
+        <div>
+          Bạn có chắc chắn muốn xóa{' '}
+          <span className={classes.modalConfirmTextBold}>{task.title}</span>
+        </div>
+        <Box display="flex" flexDirection="row-reverse" mt={2}>
+          <Box ml={1}>
+            <Button variant="contained" color="secondary" onClick={hideModal}>
+              Hủy bỏ
+            </Button>
+          </Box>
+          <Box>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => this.onDeleteTask(task)}
+            >
+              Xóa bỏ
+            </Button>
+          </Box>
+        </Box>
+      </div>,
+    );
+  };
+
+  onDeleteTask = (task) => {
+    const { id } = task;
+    const { taskActionCreators, modalActionsCreators } = this.props;
+    const { deleteTask } = taskActionCreators;
+    const { hideModal } = modalActionsCreators;
+    deleteTask(id);
+    hideModal();
+  };
+
   searchBox() {
     let xhtml = null;
     xhtml = <SearchBox handleChange={this.handleFilter} />;
@@ -82,6 +123,7 @@ class Taskboard extends Component {
               tasks={taskFilter}
               status={status}
               onClickEdit={this.handleEditTask}
+              onClickDelete={this.showModalDelete}
             />
           );
         })}
@@ -112,6 +154,7 @@ Taskboard.propTypes = {
     fetchListTaskRequest: PropTypes.func,
     filterTask: PropTypes.func,
     setTaskEditing: PropTypes.func,
+    deleteTask: PropTypes.func,
   }),
   modalActionsCreators: PropTypes.shape({
     showModal: PropTypes.func,
@@ -120,6 +163,7 @@ Taskboard.propTypes = {
     changeModalContent: PropTypes.func,
   }),
   listTask: PropTypes.array,
+  classes: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({

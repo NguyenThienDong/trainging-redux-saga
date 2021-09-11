@@ -91,6 +91,27 @@ const reducer = (state = initialState, action) => {
         ...state,
       };
     }
+    case taskConstants.DELETE_TASK:
+      return {
+        ...state,
+      };
+
+    case taskConstants.DELETE_TASK_SUCCESS: {
+      const { data: taskId } = payload;
+      const { listTask } = state;
+      toastSuccess('Xoá công việc thành công');
+      return {
+        ...state,
+        listTask: listTask.filter((item) => item.id !== taskId),
+      };
+    }
+    case taskConstants.DELETE_TASK_FAIL: {
+      const { error } = payload;
+      toastError(error);
+      return {
+        ...state,
+      };
+    }
 
     default:
       return state;

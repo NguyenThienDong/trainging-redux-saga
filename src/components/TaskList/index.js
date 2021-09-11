@@ -8,7 +8,7 @@ import TaskItem from '../TaskItem';
 
 class TaskList extends Component {
   render() {
-    const { classes, tasks, status, onClickEdit } = this.props;
+    const { classes, tasks, status, onClickEdit, onClickDelete } = this.props;
     return (
       <Grid item xs={12} md={4} key={status.value}>
         <Box mt={2} mb={2}>
@@ -20,6 +20,7 @@ class TaskList extends Component {
             task={task}
             status={status}
             onClickEdit={() => onClickEdit(task)}
+            onClickDelete={() => onClickDelete(task)}
           />
         ))}
       </Grid>
@@ -28,11 +29,11 @@ class TaskList extends Component {
 }
 
 TaskList.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
   classes: PropTypes.object.isRequired,
   tasks: PropTypes.array.isRequired,
   status: PropTypes.object.isRequired,
   onClickEdit: PropTypes.func,
+  onClickDelete: PropTypes.func,
 };
 
 export default withStyles(styles)(TaskList);
