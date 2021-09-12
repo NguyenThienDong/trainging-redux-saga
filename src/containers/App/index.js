@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ThemeProvider, withStyles } from '@material-ui/core';
+import { CssBaseline, ThemeProvider, withStyles } from '@material-ui/core';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,6 +32,7 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <ThemeProvider theme={theme}>
+            <CssBaseline />
             <GlobalLoading />
             <ToastContainer />
             <Modal />
