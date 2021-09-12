@@ -1,2 +1,5 @@
 export const SHOW_LOADING = 'GLOBAL_SHOW_LOADING';
 export const HIDDEN_LOADING = 'GLOBAL_HIDDEN_LOADING';
+
+export const SHOW_SIDEBAR = 'SHOW_SIDEBAR';
+export const HIDE_SIDEBAR = 'HIDE_SIDEBAR';

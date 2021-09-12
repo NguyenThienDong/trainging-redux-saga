@@ -6,14 +6,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators, compose } from 'redux';
 import styles from './styles';
+import * as uiActions from '../../../actions/ui';
 
 const menuId = 'primary-search-account-menu';
-const mobileMenuId = 'primary-search-account-menu-mobile';
 
 class Header extends Component {
   constructor(props) {
@@ -53,8 +54,15 @@ class Header extends Component {
     );
   };
 
+  handleToggleSidebar = () => {
+    const { showSidebar, onToggleSidebar } = this.props;
+    if (onToggleSidebar) {
+      onToggleSidebar(!showSidebar);
+    }
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, name } = this.props;
     return (
       <div className={classes.grow}>
         <AppBar position="static">
@@ -64,11 +72,12 @@ class Header extends Component {
               className={classes.menuButton}
               color="inherit"
               aria-label="open drawer"
+              onClick={this.handleToggleSidebar}
             >
               <MenuIcon />
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
-              Material-UI
+              {name}
             </Typography>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
@@ -93,6 +102,19 @@ class Header extends Component {
 
 Header.propTypes = {
   classes: PropTypes.object,
+  name: PropTypes.string,
+  showSidebar: PropTypes.bool,
+  onToggleSidebar: PropTypes.func,
 };
 
-export default withStyles(styles)(Header);
+const mapStateToProps = (state) => ({
+  showSidebar: state.ui.showSidebar,
+});
+
+const mapActionsToProps = (dispatch) => ({
+  uiActionCreators: bindActionCreators(uiActions, dispatch),
+});
+
+const withConnect = connect(mapStateToProps, mapActionsToProps);
+
+export default compose(withConnect, withStyles(styles))(Header);

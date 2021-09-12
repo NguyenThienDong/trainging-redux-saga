@@ -7,3 +7,11 @@ export const showLoading = () => ({
 export const hiddenLoading = () => ({
   type: uiTypes.HIDDEN_LOADING,
 });
+
+export const showSidebar = () => ({
+  type: uiTypes.SHOW_SIDEBAR,
+});
+
+export const hideSidebar = () => ({
+  type: uiTypes.HIDE_SIDEBAR,
+});
