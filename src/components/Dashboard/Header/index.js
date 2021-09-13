@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, compose } from 'redux';
+import { withRouter } from 'react-router';
 import styles from './styles';
 import * as uiActions from '../../../actions/ui';
 
@@ -36,6 +37,11 @@ class Header extends Component {
     });
   };
 
+  handleLogout = () => {
+    const { history } = this.props;
+    history.push('/login');
+  };
+
   renderMenu = () => {
     const { anchorEl } = this.state;
     const isMenuOpen = Boolean(anchorEl);
@@ -49,7 +55,7 @@ class Header extends Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMenuClose}>Logout</MenuItem>
+        <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
       </Menu>
     );
   };
@@ -105,6 +111,7 @@ Header.propTypes = {
   name: PropTypes.string,
   showSidebar: PropTypes.bool,
   onToggleSidebar: PropTypes.func,
+  history: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
@@ -117,4 +124,4 @@ const mapActionsToProps = (dispatch) => ({
 
 const withConnect = connect(mapStateToProps, mapActionsToProps);
 
-export default compose(withConnect, withStyles(styles))(Header);
+export default compose(withConnect, withStyles(styles))(withRouter(Header));
